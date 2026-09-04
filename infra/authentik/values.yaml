@@ -1,0 +1,77 @@
+authentik:
+  error_reporting:
+    enabled: false
+  postgresql:
+    host: postgres.dev.svc.cluster.local
+    name: authentik
+    user: authentik
+  redis:
+    host: authentik-redis-master
+
+global:
+  env:
+    - name: AUTHENTIK_SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: authentik-creds
+          key: secret-key
+    - name: AUTHENTIK_POSTGRESQL__PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: authentik-creds
+          key: postgresql-password
+    - name: AUTHENTIK_REDIS__PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: authentik-creds
+          key: redis-password
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - auth.shedy.xyz
+    tls:
+      - hosts:
+          - auth.shedy.xyz
+        secretName: authentik-tls
+  resources:
+    requests:
+      memory: 384Mi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+      cpu: 1000m
+
+worker:
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 768Mi
+      cpu: 1000m
+
+postgresql:
+  enabled: false
+
+redis:
+  enabled: true
+  auth:
+    existingSecret: authentik-creds
+    existingSecretPasswordKey: redis-password
+  master:
+    persistence:
+      enabled: false
+    resources:
+      requests:
+        memory: 64Mi
+        cpu: 50m
+      limits:
+        memory: 256Mi
+        cpu: 500m
+  replica:
+    replicaCount: 0
