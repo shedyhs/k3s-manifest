@@ -40,4 +40,21 @@ bao write auth/kubernetes/role/postgres-role \
   bound_service_account_namespaces=dev \
   policies=postgres-read \
   ttl=1h
+
+echo "==> policy authentik-read"
+kubectl exec -n "$NS" -i "$POD" -- sh -c '
+bao policy write authentik-read - <<POLICY
+path "secret/data/authentik" {
+  capabilities = ["read"]
+}
+POLICY
+'
+
+echo "==> role authentik-role"
+bao write auth/kubernetes/role/authentik-role \
+  bound_service_account_names=authentik-secrets \
+  bound_service_account_namespaces=authentik \
+  policies=authentik-read \
+  ttl=1h
+
 echo "==> pronto"
