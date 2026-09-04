@@ -8,10 +8,8 @@ labels:
       app: postgres
 
 resources:
+  - serviceaccount.yaml
   - statefulset.yaml
   - service.yaml
-
-secretGenerator:
-  - name: postgres-secret
-    envs:
-      - postgres.env
+  - secretstore.yaml
+  - externalsecret.yaml
