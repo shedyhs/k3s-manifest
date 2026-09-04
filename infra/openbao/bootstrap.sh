@@ -36,9 +36,8 @@ POLICY
 
 echo "==> role postgres-role"
 bao write auth/kubernetes/role/postgres-role \
-  bound_service_account_names=external-secrets \
-  bound_service_account_namespaces=external-secrets \
+  bound_service_account_names=postgres-secrets \
+  bound_service_account_namespaces=dev \
   policies=postgres-read \
   ttl=1h
-
 echo "==> pronto"
