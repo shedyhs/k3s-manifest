@@ -4,6 +4,7 @@ metadata:
   name: excalidraw
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: dev-authentik@kubernetescrd
 spec:
   ingressClassName: traefik
   rules:

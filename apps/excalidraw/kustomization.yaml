@@ -6,4 +6,5 @@ namespace: dev
 resources:
   - frontend.yaml
   - room.yaml
+  - middleware.yaml
   - ingress.yaml
