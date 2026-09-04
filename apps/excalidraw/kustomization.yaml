@@ -4,7 +4,9 @@ kind: Kustomization
 namespace: dev
 
 resources:
-  - frontend.yaml
-  - room.yaml
+  - excalidraw-deployment.yaml
+  - excalidraw-service.yaml
   - middleware.yaml
   - ingress.yaml
+  - room-deployment.yaml
+  - room-service.yaml

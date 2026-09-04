@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: excalidraw-room
+spec:
+  selector:
+    app: excalidraw
+    component: room
+  ports:
+    - port: 80
+      targetPort: 80
